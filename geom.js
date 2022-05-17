@@ -129,6 +129,10 @@ export class Point{
         const value = Math.sqrt((_x**2) + (_y**2));
         return getPrecNumb(value);
     };
+
+    clone(){
+        return new Point(this.x,this.y);
+    }
 };
 
 
@@ -303,11 +307,10 @@ export class Line{
 
         if(start instanceof Point){
              //start:Point; end : Point;
-            this.start = start;
+            this.start = start.clone();
             
             if(end instanceof Point){
-                
-                this.end = end;
+                this.end = end.clone();
             }else{
                 //start: Point, end: x_2, y_2;
                 this.end = new Point(end, x2);
@@ -317,15 +320,13 @@ export class Line{
             this.start = new Point(start,end);
             
             if(x2 instanceof Point){
-                this.end = x2;
+                this.end = x2.clone();
             }else{
                  //start: x_1; end: y_1; x2: x_2; y2: y_2
                  this.end = new Point(x2,y2);
             };
         };
 
-        const x = this.start.x-this.end.x;
-        const y = this.start.y-this.end.y;
         this.length = this.getLength();
     };
 
@@ -475,12 +476,11 @@ export class Circle{
     constructor(x,y,r){
     //or (Point,r)
         if(x instanceof Point){
-            this.center = x;
+            this.center = x.clone();
             this.x = x.x;
             this.y = x.y;
             this.r = y;
         }else{
-            // console.log('s')
             this.x = x;
             this.y = y;
             this.r = r;
@@ -762,4 +762,5 @@ export class Ray extends Vector{
         };
     };
 };
+
 
