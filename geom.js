@@ -335,7 +335,7 @@ export class Line{
     };
 
 
-    extendOn(point,y){
+    extendTo(point,y){
         if(!(point instanceof Point)){
             point = new Point(point,y);
         };
@@ -434,8 +434,8 @@ export class Vector extends Line{
         return this;
     };
 
-    extendOn(point,y){
-        super.extendOn(point,y);
+    extendTo(point,y){
+        super.extendTo(point,y);
         this.x = this.end.x - this.start.x;
         this.y = this.end.y - this.start.y;
     };
