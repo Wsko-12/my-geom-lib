@@ -3,14 +3,13 @@ const DEGS_PREC = 4;
 const RADS_PREC = 7;
 
 function getPrecNumb(num,precision = NUMBERS_PREC){
-
     return Math.round(num*(10**precision))/10**precision;
-}
+};
 
 export class Point{
     constructor(x,y){
-        this.x = Number.parseFloat(x.toFixed(NUMBERS_PREC));
-        this.y = Number.parseFloat(y.toFixed(NUMBERS_PREC));
+        this.x = getPrecNumb(x);
+        this.y = getPrecNumb(y);
     };
 
     vecToPoint(x,y){
@@ -66,8 +65,8 @@ export class Point{
         };
         x = r * Math.cos(angle.rad);
         y = r * Math.sin(angle.rad);
-        x = Number.parseFloat(x.toFixed(NUMBERS_PREC));
-        y =  Number.parseFloat(y.toFixed(NUMBERS_PREC));
+        x = getPrecNumb(x);
+        y =  getPrecNumb(y);
 
         return new Point(x + this.x, y + this.y);
     };
@@ -90,7 +89,7 @@ export class Point{
                 deg = degAtan + 180;
             };
         };  
-        deg = Number.parseFloat(deg.toFixed(DEGS_PREC));
+        deg = getPrecNumb(deg,DEGS_PREC);
         return new Angle(deg);
 
         /*
@@ -128,7 +127,7 @@ export class Point{
         const _y = this.y - point.y;
 
         const value = Math.sqrt((_x**2) + (_y**2));
-        return Number.parseFloat(value.toFixed(NUMBERS_PREC));
+        return getPrecNumb(value);
     };
 };
 
@@ -173,17 +172,17 @@ export class Angle{
 
     constructor(deg,rad){
         if(deg != null){
-            this.deg = Number.parseFloat(deg.toFixed(DEGS_PREC));
+            this.deg = getPrecNumb(deg,DEGS_PREC);
             this.rad =  this.deg * Math.PI/180;
-            this.rad = Number.parseFloat(this.rad.toFixed(RADS_PREC));
+            this.rad = getPrecNumb(this.rad,RADS_PREC);
         }else{
             if(rad == undefined){
                 this.rad = 0;
                 this.deg = 0;
             }else{
-                this.rad = Number.parseFloat(rad.toFixed(RADS_PREC));
+                this.rad = getPrecNumb(rad,RADS_PREC);
                 this.deg =  this.rad * 180/Math.PI;
-                this.deg = Number.parseFloat(this.deg.toFixed(DEGS_PREC));
+                this.deg = getPrecNumb(this.deg,DEGS_PREC);
             };
         };
         this.normalize();
@@ -206,9 +205,9 @@ export class Angle{
                 nR = 0;
                 nD = 0;
             }else{
-                nD = Number.parseFloat(nD.toFixed(DEGS_PREC));
+                nD = getPrecNumb(nD,DEGS_PREC);
                 nR = nD * Math.PI/180;
-                nR = Number.parseFloat(nR.toFixed(RADS_PREC));
+                nR = getPrecNumb(nR,RADS_PREC);
             };
             
 
@@ -224,9 +223,9 @@ export class Angle{
                 nR = 0;
                 nD =0;
             }else{
-                nR = Number.parseFloat(nR.toFixed(RADS_PREC));
+                nR = getPrecNumb(nR,RADS_PREC);
                 nD = nR * 180/Math.PI;
-                nD = Number.parseFloat(nD.toFixed(DEGS_PREC));
+                nD = getPrecNumb(nD,DEGS_PREC);
             };
 
         };
@@ -248,13 +247,13 @@ export class Angle{
         if(deg!=null){
             this.deg += deg;
             this.rad +=  this.deg * Math.PI/180;
-            this.deg = Number.parseFloat(this.deg.toFixed(DEGS_PREC));
-            this.rad = Number.parseFloat(this.rad.toFixed(RADS_PREC));
+            this.deg = getPrecNumb(this.deg,DEGS_PREC);
+            this.rad = getPrecNumb(this.rad,RADS_PREC);
         }else{
             this.rad += rad;
             this.deg = this.rad * 180/Math.PI;
-            this.deg = Number.parseFloat(this.deg.toFixed(NUMBERS_PREC));
-            this.rad = Number.parseFloat(this.rad.toFixed(DEGS_PREC));
+            this.deg = getPrecNumb(this.deg,DEGS_PREC);
+            this.rad = getPrecNumb(this.rad,RADS_PREC);
         }
         this.normalizeThis();
         return this;
@@ -463,11 +462,11 @@ export class Vector extends Line{
     projectTo(vec){
         const dot = this.dotProduct(vec);
         const value = dot/vec.length;
-        return Number.parseFloat(value.toFixed(NUMBERS_PREC));
+        return getPrecNumb(value);
         
     };
     getPointByDist(length){
-       const k = Number.parseFloat((length/this.length).toFixed(NUMBERS_PREC));
+       const k = getPrecNumb(length/this.length);
        let x = this.start.x + (this.end.x - this.start.x)*k;
        let y = this.start.y + (this.end.y - this.start.y)*k;
 
@@ -529,10 +528,11 @@ export class Circle{
         };
 
         const dist = point.getDistanceTo(this.center);
-        const newVectorsDist = Number.parseFloat(Math.sqrt(dist**2 + this.r**2).toFixed(NUMBERS_PREC));
+       
+        const newVectorsDist =  getPrecNumb(Math.sqrt(dist**2 + this.r**2));
         
 
-        const angleBias = Number.parseFloat(Math.atan(this.r/dist).toFixed(RADS_PREC));
+        const angleBias = getPrecNumb(Math.atan(this.r/dist),RADS_PREC);
         
         const angleFromPoint = point.anglePoint(this.center);
         
