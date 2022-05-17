@@ -420,23 +420,31 @@ export class Vector extends Line{
 
 
 
-     normalize(vec){
-        if(!vec){
-            this.normalizeThis();
-            return;
-        };
+     static normalize(vec,originToZero){
         vec = new Vector(vec.start,vec.end);
         vec.x = vec.x / vec.length;
         vec.y = vec.y /vec.length;
-        vec.x = Number.parseFloat(vec.x.toFixed(NUMBERS_PREC));
-        vec.y = Number.parseFloat(vec.y.toFixed(NUMBERS_PREC));
+        
+        vec.x = getPrecNumb(vec.x);
+        vec.y = getPrecNumb(vec.y);
+
+        if(originToZero){
+            vec.start.x = vec.start.y = 0;
+        }
+        vec.end.x = vec.start.x + vec.x;
+        vec.end.y = vec.start.y + vec.y;
+        vec.length = vec.getLength();
+
         return vec;
     };
 
-    normalizeThis(){
-        const n = this.normalize(this);
+    normalize(originToZero){
+        const n = Vector.normalize(this,originToZero);
         this.x = n.x;
         this.y = n.y;
+        this.start = n.start;
+        this.end = n.end;
+        this.length = n.length;
         return this;
     };
 
@@ -467,7 +475,6 @@ export class Vector extends Line{
     };
 };
 
-console.log(new Vector(1,1).normalize())
 
 export class Circle{
     constructor(x,y,r){
