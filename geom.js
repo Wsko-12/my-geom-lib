@@ -402,6 +402,12 @@ export class Vector extends Line{
         
         */
     constructor(start,end,x2,y2){
+        if(!x2 && !y2 && !(start instanceof Point)){
+            x2 = start;
+            y2 = end;
+            start = 0;
+            end = 0;
+        }
         super(start,end,x2,y2);
         
         this.x = this.end.x - this.start.x;
@@ -414,7 +420,7 @@ export class Vector extends Line{
 
 
 
-    normalize(vec){
+     normalize(vec){
         if(!vec){
             this.normalizeThis();
             return;
@@ -460,6 +466,8 @@ export class Vector extends Line{
        return new Point(x,y);
     };
 };
+
+console.log(new Vector(1,1).normalize())
 
 export class Circle{
     constructor(x,y,r){
