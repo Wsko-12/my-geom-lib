@@ -698,21 +698,27 @@ export class Ray extends Vector{
 
         /*
             **test**
-            let cir = new G.Circle(5,5,2);
-            let ray = new G.Ray(1,2,8,6);
+            let cir = new Circle(5,5,2);
+            let ray = new Ray(1,2,8,6);
             console.log(ray.checkIntersectionTwoPoints(cir),['x3.66:y3.52' , 'x6.96:y5.4'])
 
-            let cir = new G.Circle(5,5,2);
-            let ray = new G.Ray(1,2,6,5);
+            cir = new Circle(5,5,2);
+            ray = new Ray(1,2,6,5);
             console.log(ray.checkIntersectionTwoPoints(cir),['x3.66:y3.52' , 'x6:y5'])
 
-            let cir = new G.Circle(5,5,2);
-            let ray = new G.Ray(4,4,9,7);
+            cir = new Circle(5,5,2);
+            ray = new Ray(4,4,9,7);
             console.log(ray.checkIntersectionTwoPoints(cir),['x4:y4' , 'x6.87:y5.72'])
 
-            let cir = new G.Circle(5,5,2);
-            let ray = new G.Ray(2,7,8,7);
-            console.log(ray.checkIntersectionTwoPoints(cir),'x:5:y:7; x:5:y:7')
+            // the ray touches the circle tangentially
+            cir = new Circle(5,5,2);
+            ray = new Ray(2,7,8,7);
+            console.log(ray.checkIntersectionTwoPoints(cir),'false')
+
+            //start point inside circle
+            cir = new Circle(5,5,2);
+            ray = new Ray(4,5,8,7);
+            console.log(ray.checkIntersectionTwoPoints(cir),['x4:y5' , 'x6.54:y6.27'])
             
         
         
@@ -727,7 +733,9 @@ export class Ray extends Vector{
 
             const AC = new Vector(a,c);
             const AT_length = AC.projectTo(this);
-            const CT_length = Math.sqrt(AC.length**2 - AT_length**2);
+
+            const CT_length = getPrecNumb(Math.sqrt(AC.length**2 - AT_length**2));
+
             if(CT_length > figure.r){
                 return false;
             };
@@ -735,8 +743,9 @@ export class Ray extends Vector{
             const PT_length = Math.sqrt(figure.r**2 - CT_length**2);
 
             let dist_1 =  AT_length - PT_length;
+
             if(dist_1 <= 0){
-                    //situation when start point inside the circle
+                //start point inside the circle
                 dist_1 = AT_length + PT_length;
                 if(dist_1 < 0){
                     return false;
@@ -754,42 +763,11 @@ export class Ray extends Vector{
             if(dist_2 > this.length){
                 dist_2 = this.length;
             }
-            // console.log(Math.abs(dist_1) > this.length);
-            // if(Math.abs(dist_1) > this.length){
-            //     dist_1 = 0
-            // }else{
-            //     return false;
-            // };
 
-
-
-
-
-            // let dist_2 = AT_length+PT_length;
-            // let point_1,point_2;
-            // if(dist_1 <= 0){
-            //     point_1 = this.start;
-            // }else{
-            // };
             const point_1 = this.getPointByDist(dist_1);
             const point_2 = this.getPointByDist(dist_2);
 
-
-            // if(dist_2 >= this.length){
-            //     point_2 = this.end;
-            // }else{
-                
-            // };
-
             return [point_1,point_2];
-
-
-            // const dist = AT_length - PT_length;
-            // if(dist > this.length){
-            //     return false;
-            // };
-
-            // return this.getPointByDist(dist);
         };
     };
 };
