@@ -413,28 +413,30 @@ export class Vector extends Line{
         this.y = this.end.y - this.start.y;
     };
 
+
     dotProduct(vec){
-        return this.x*vec.x + this.y*vec.y;
+        const _vec = Vector.normalize(vec);
+        return this.x*_vec.x + this.y*_vec.y;
     };
 
 
 
      static normalize(vec,originToZero){
-        vec = new Vector(vec.start,vec.end);
-        vec.x = vec.x / vec.length;
-        vec.y = vec.y /vec.length;
+        const v = new Vector(vec.start.x,vec.start.y,vec.end.x,vec.end.y);
+        v.x = v.x / v.length;
+        v.y = v.y /v.length;
         
-        vec.x = getPrecNumb(vec.x);
-        vec.y = getPrecNumb(vec.y);
+        v.x = getPrecNumb(v.x);
+        v.y = getPrecNumb(v.y);
 
         if(originToZero){
-            vec.start.x = vec.start.y = 0;
+            v.start.x = v.start.y = 0;
         }
-        vec.end.x = vec.start.x + vec.x;
-        vec.end.y = vec.start.y + vec.y;
-        vec.length = vec.getLength();
+        v.end.x = v.start.x + v.x;
+        v.end.y = v.start.y + v.y;
+        v.length = v.getLength();
 
-        return vec;
+        return v;
     };
 
     normalize(originToZero){
@@ -459,12 +461,6 @@ export class Vector extends Line{
         this.y = this.end.y - this.start.y;
     };
 
-    projectTo(vec){
-        const dot = this.dotProduct(vec);
-        const value = dot/vec.length;
-        return getPrecNumb(value);
-        
-    };
     getPointByDist(length){
        const k = getPrecNumb(length/this.length);
        let x = this.start.x + (this.end.x - this.start.x)*k;
@@ -596,15 +592,10 @@ export class Ray extends Vector{
 
                 console.log(point.rayToAngle(225,null,2.83).checkIntersection(circle),'false');
                 console.log(point.rayToAngle(222.28,null,7.64).checkIntersection(circle),'x:8.63','y:16.93');
-                console.log(point.rayToAngle(222.28,null,2.83).checkIntersection(circle),'x:8.63','y:16.93');
+                console.log(point.rayToAngle(222.28,null,2.82).checkIntersection(circle,true),'x:8.63','y:16.93');
 
-
-
-                **NEW TESTS**
-
-                **situation when start point inside the circle**
-                let cir = new G.Circle(5,5,2);
-                let ray = new G.Ray(5,4,8,7);
+                let cir = new Circle(5,5,2);
+                let ray = new Ray(5,4,8,7);
                 console.log(ray.checkIntersection(cir),'x:6.82:y:5.82;')
             */
 
@@ -613,7 +604,7 @@ export class Ray extends Vector{
            const s = this.end;
 
             const AC = new Vector(a,c);
-            const AT_length = AC.projectTo(this);
+            const AT_length = AC.dotProduct(this);
 
             const CT_length = Math.sqrt(AC.length**2 - AT_length**2);
             if(CT_length > figure.r){
@@ -732,7 +723,7 @@ export class Ray extends Vector{
             const s = this.end;
 
             const AC = new Vector(a,c);
-            const AT_length = AC.projectTo(this);
+            const AT_length = AC.dotProduct(this);
 
             const CT_length = getPrecNumb(Math.sqrt(AC.length**2 - AT_length**2));
 
@@ -771,3 +762,4 @@ export class Ray extends Vector{
         };
     };
 };
+
